@@ -1,7 +1,7 @@
 const fs = require('fs');
 const {resolve} = require('path');
 const path = require('path');
-const { promises } = require('readline');
+// const { promises } = require('readline');
 
 const FilePath = path.join(__dirname, '..', 'data', 'data.json');
 
@@ -17,13 +17,11 @@ class Todo{
                 if(err) return reject(err);
                 data = JSON.parse(data);
                 data.push(task);
-
                 fs.writeFile(
                     FilePath,
                     JSON.stringify(data),
-                    
                     (err)=>{
-                        if(err) reject(err);
+                        if(err) return reject(err);
                         else resolve(data);
                     }
                 )
@@ -41,7 +39,7 @@ class Todo{
                 },
                 (err,data)=>{
                     if(err) return reject(err)
-                    else resolve(data);
+                    resolve(data);
                 }
 
             )
@@ -62,22 +60,23 @@ class Todo{
                         if(e===task) return false;
                         return true;
                     })
+                    fs.writeFile(
+                        FilePath,
+                        JSON.stringify(data),
+                        (err)=>{
+                            if(err) return reject(err);
+                            else resolve(data);
+                        }
+        
+                    )
                 }
             )
 
-            fs.writeFile(
-                FilePath,
-                JSON.stringify(data),
-                (err)=>{
-                    if(err) return reject(err);
-                    else resolve(data);
-                }
-
-            )
         })
     }
 
     static increasePriority(task){
+        console.log("increase")
         return new Promise((resolve, reject)=>{
             fs.readFile(
                 FilePath,
@@ -91,13 +90,14 @@ class Todo{
                     let temp = data[indx-1];
                     data[indx-1] = data[indx];
                     data[indx] = temp;
-
-                    fs.watchFile(
+                    console.log("coding")
+                    fs.writeFile(
                         FilePath,
                         JSON.stringify(data),
                         (err)=>{
                             if(err) return reject(err);
-                            else resolve(data);
+                            resolve(data);
+                            console.log("answer");
                         }
                     )
                 }

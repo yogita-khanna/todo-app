@@ -19,7 +19,7 @@ function updateList(tasks){
 }
 
 function initialiseList(){
-    axios.get(`/gettasks`)
+    axios.get(`/gettask`)
     .then((data)=>{
         data = data.data;
         updateList(data);
@@ -36,9 +36,11 @@ btn.addEventListener('click',(ev)=>{
         .then((data)=>{
             data = data.data;
             updateList(data);
+            console.log('script ss');
         })
         .catch(err=>{
             alert(err);
+            console.log(err);
         })
 })
 

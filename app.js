@@ -3,6 +3,7 @@ const path = require('path');
 const app = express();
 const PORT = 4444;
 const Todo = require('./utils/dataHelper');
+const { CLIENT_RENEG_LIMIT } = require('tls');
 
 const Public_Folder = path.join(__dirname, 'public');
 app.use('/', express.static(Public_Folder));
@@ -14,19 +15,23 @@ let arr = [
     "Sing",
     "Play"
 ];
+// app.get('/addtask', (req,res)=>{
+//     const {task} = req.query;
+//     arr.push(task);
+//     res.send(arr);
+// })
 app.get('/addtask', (req,res)=>{
     const {task} = req.query;
-    arr.push(task);
-    res.send(arr);
-})
-app.get('/addtask', (req,res)=>{
-    const {task} = req.query;
+    console.log("helllooo")
+    
     Todo.addTask(task)
     .then(data=>{
+        console.log("random");
         res.send(data);
     })
     .catch(err=>{
         res.send(err);
+        console.log("not");
     })
 })
 
@@ -42,12 +47,17 @@ app.get('/gettask', (req,res)=>{
 
 app.get('/increasepriority', (req,res)=>{
     const {name} = req.query;
+    console.log("Hi")
     Todo.increasePriority(name)
     .then(data=>{
         res.send(data);
+        console.log("then")
+
     })
     .catch(err=>{
         res.send(err);
+        console.log("catch")
+
     })
 })
 
